@@ -259,11 +259,15 @@ class OpcjeViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        DataOFBoard.sharedInstance.startTimerReadValue()
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.tableView.reloadData), name: "DataBluetoothChanged", object: DataOFBoard.sharedInstance)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        DataOFBoard.sharedInstance.stopTimerReadValue()
 
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "DataBluetoothChanged", object: nil)
     }

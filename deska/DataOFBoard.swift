@@ -24,8 +24,9 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     var manager: CBCentralManager? //menadzer urzadzen
     var peripheral: CBPeripheral? //urzadzenie
     var mainCharacteristic: CBCharacteristic? //charakterystyka polaczenia
-    var mainString: NSString = ""
-    var timer: NSTimer?
+    private var mainString: NSString = ""
+    private var sendSpeedTimer: NSTimer?
+    private var readValueTimer: NSTimer?
     
     // MARK: SharedInstance
     
@@ -100,20 +101,30 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                                 let data = line.substringFromIndex(range.location + 2)
                                 
                                 switch(command){
+                                case "+RRPM" :
+                                    rpm = UInt(data) ?? 0
+                                case "+RBAT" :
+                                    volt = UInt(data) ?? 0
+                                case "+RTBA" :
+                                    temp = Int(data) ?? 0
+                                case "+RTDR" :
+                                    tempOfControler = Int(data) ?? 0
+                                case "+RWEI" :
+                                    weight = UInt(data) ?? 0
                                 case "+LED1" :
                                     _led1 = data == "1"
                                 case "+LED2" :
                                     _led2 = data == "1"
                                 case "+SAKC" :
-                                    _acceleration = UInt(data)!
+                                    _acceleration = UInt(data) ?? 0
                                 case "+SBRK" :
-                                    _maxBreak = UInt(data)!
+                                    _maxBreak = UInt(data) ?? 0
                                 case "+SBSE" :
                                     _requiredBoardSensor = data == "1"
                                 case "+SMOD" :
-                                    _controlMode = UInt(data)!
+                                    _controlMode = UInt(data) ?? 0
                                 case "+SMAC" :
-                                    _battery = UInt(data)!
+                                    _battery = UInt(data) ?? 0
                                 default: break
                                 }
                                 print(command + "=>" + data)
@@ -202,15 +213,27 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
     
     func startTimerSpeedValue(){
-        timer?.invalidate()
+        sendSpeedTimer?.invalidate()
         
-        timer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: #selector(DataOFBoard.sendSpeedValue), userInfo: nil, repeats: true)
+        sendSpeedTimer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: #selector(DataOFBoard.sendSpeedValue), userInfo: nil, repeats: true)
         
-        timer?.fire()
+        sendSpeedTimer?.fire()
     }
     
     func stopTimerSpeedValue(){
-        timer?.invalidate()
+        sendSpeedTimer?.invalidate()
+    }
+    
+    func startTimerReadValue(){
+        readValueTimer?.invalidate()
+        
+        readValueTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(DataOFBoard.readReadValue), userInfo: nil, repeats: true)
+        
+        readValueTimer?.fire()
+    }
+    
+    func stopTimerReadValue(){
+        readValueTimer?.invalidate()
     }
     
     @objc private func sendSpeedValue(){
@@ -224,6 +247,15 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         dane.dealloc(2)
         
         sendData("AT+SPED=\(_value),0,\(crc)")
+    }
+    
+    @objc private func readReadValue(){
+        //zamien na liste 4 komend w powietrzu
+        sendData("AT+RRPM?")
+        sendData("AT+RBAT?")
+        sendData("AT+RTBA?")
+        sendData("AT+RTDR?")
+        sendData("AT+RWEI?")
     }
     
     // MARK: Zmienne do odczytu
