@@ -14,8 +14,8 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     // MARK: Stale
     
-    let BEAN_SERVICE_UUID: CBUUID = CBUUID(string: "a495ff20-c5b1-4b44-b512-1370f02d74de")
-    let BEAN_CHARACTERISTIK_UUID: CBUUID = CBUUID(string: "a495ff21-c5b1-4b44-b512-1370f02d74de")
+    let BEAN_SERVICE_UUID: CBUUID = CBUUID(string: "74278BDA-B644-4520-8F0C-720EAF059935")
+    let BEAN_CHARACTERISTIK_UUID: CBUUID = CBUUID(string: "0000FFE1-0000-1000-8000-00805F9B34FB")
     
     
     
@@ -50,6 +50,8 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         for service in peripheral.services! {
             let thisService = service as CBService
             
+            print("Characteristic:\(service.UUID)")
+            
             if service.UUID == BEAN_SERVICE_UUID {
                 peripheral.discoverCharacteristics(nil, forService: thisService)
             }
@@ -60,6 +62,8 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         if (service.UUID == BEAN_SERVICE_UUID) {
             
             for characteristic in service.characteristics! {
+                
+                print("Characteristic:\(characteristic.UUID)")
                 
                 if (characteristic.UUID == BEAN_CHARACTERISTIK_UUID) {
                     //we'll save the reference, we need it to write data
