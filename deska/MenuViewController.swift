@@ -18,6 +18,14 @@ class MenuViewController: UIViewController {
     
     @IBAction func slider_action(sender: UISlider) {
         DataOFBoard.sharedInstance.value = Int(round(sender.value))
+        
+        if sender.value < 0 {
+            sender.minimumTrackTintColor = UIColor.redColor()
+        } else if sender.value == 0 {
+            sender.minimumTrackTintColor = UIColor.blueColor()
+        } else {
+            sender.minimumTrackTintColor = UIColor.greenColor()
+        }
     }
     
     func methodOfReceivedNotification(notification: NSNotification){
@@ -29,6 +37,7 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        self.slider.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI_2))
     }
 
     override func didReceiveMemoryWarning() {

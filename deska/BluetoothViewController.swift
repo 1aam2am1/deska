@@ -65,7 +65,7 @@ class BluetoothViewController: UITableViewController, CBCentralManagerDelegate {
             print("On")
             central.scanForPeripheralsWithServices(nil, options: nil)
         case .PoweredOff:
-            print("OFF")
+            fallthrough
         default:
             let alert = UIAlertController(title: nil, message: "Eroor Code: \(central.state.rawValue)", preferredStyle: .Alert)
             alert.addAction(UIAlertAction(title: "OK", style: .Destructive, handler: {action in
