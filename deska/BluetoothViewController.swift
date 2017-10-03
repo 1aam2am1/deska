@@ -27,7 +27,8 @@ class BluetoothViewController: UITableViewController, CBCentralManagerDelegate {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Connect", forIndexPath: indexPath)
+        
+        let cell = tableView.dequeueReusableCellWithIdentifier("Bluetooth", forIndexPath: indexPath)
         
         let peripheral = peripherals[indexPath.row]
 
@@ -43,8 +44,18 @@ class BluetoothViewController: UITableViewController, CBCentralManagerDelegate {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let peripheral = peripherals[indexPath.row]
-        
-        manager?.connectPeripheral(peripheral, options: nil)
+
+        if DataOFBoard.sharedInstance.connected == self.tableView.cellForRowAtIndexPath(indexPath)?.textLabel?.text {
+            DataOFBoard.sharedInstance.disconnect()
+            
+            if let navController = self.navigationController {
+                //*navController.popViewController(animated: true)
+                navController.popViewControllerAnimated(true)
+            }
+        }
+        else {
+            manager.connectPeripheral(peripheral, options: nil)
+        }
     }
     
     func centralManagerDidUpdateState(central: CBCentralManager) {
@@ -74,7 +85,7 @@ class BluetoothViewController: UITableViewController, CBCentralManagerDelegate {
         self.tableView.reloadData()
     }
     
-    func centralManager(central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+    func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
         
         manager.stopScan()
         

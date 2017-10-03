@@ -193,26 +193,7 @@ class OpcjeViewController: UITableViewController {
                 self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
             case 6:
                 let alert = UIAlertController(title: "Control mode", message: nil, preferredStyle: .ActionSheet)
-                /*
-                alert.addAction(UIAlertAction(title: "Slow", style: .Default, handler: {action in
-                    DataOFBoard.sharedInstance.controlMode = 0
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Normal", style: .Default, handler: {action in
-                    DataOFBoard.sharedInstance.controlMode = 1
-                }))
-                
-                alert.addAction(UIAlertAction(title: "gt", style: .Default, handler: {action in
-                    DataOFBoard.sharedInstance.controlMode = 2
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Lerning", style: .Default, handler: {action in
-                    DataOFBoard.sharedInstance.controlMode = 3
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Custiom", style: .Default, handler: {action in
-                    DataOFBoard.sharedInstance.controlMode = 4
-                }))*/
+
                 for index in 0..<controlNames.count {
                     alert.addAction(UIAlertAction(title: controlNames[index], style: .Default, handler: {action in
                         DataOFBoard.sharedInstance.controlMode = UInt(index)
@@ -261,7 +242,8 @@ class OpcjeViewController: UITableViewController {
         
         DataOFBoard.sharedInstance.startTimerReadValue()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.tableView.reloadData), name: "DataBluetoothChanged", object: DataOFBoard.sharedInstance)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.tableView.reloadData), name: "DataBluetoothChanged", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.tableView.reloadData), name: "DataBluetoothConnected", object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -270,6 +252,7 @@ class OpcjeViewController: UITableViewController {
         DataOFBoard.sharedInstance.stopTimerReadValue()
 
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "DataBluetoothChanged", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "DataBluetoothConnected", object: nil)
     }
 }
 

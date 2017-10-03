@@ -17,7 +17,7 @@ class MenuViewController: UIViewController {
     // MARK: Akcje
     
     @IBAction func slider_action(sender: UISlider) {
-        DataOFBoard.sharedInstance.value = UInt(round(sender.value))
+        DataOFBoard.sharedInstance.value = Int(round(sender.value))
     }
     
     func methodOfReceivedNotification(notification: NSNotification){

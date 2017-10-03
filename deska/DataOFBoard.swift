@@ -14,7 +14,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     // MARK: Stale
     
-    let BEAN_SERVICE_UUID: CBUUID = CBUUID(string: "74278BDA-B644-4520-8F0C-720EAF059935")
+    let BEAN_SERVICE_UUID: CBUUID = CBUUID(string: "0000ffe0-0000-1000-8000-00805f9b34fb")
     let BEAN_CHARACTERISTIK_UUID: CBUUID = CBUUID(string: "0000FFE1-0000-1000-8000-00805F9B34FB")
     
     
@@ -47,10 +47,9 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
     
     func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
+        
         for service in peripheral.services! {
             let thisService = service as CBService
-            
-            print("Characteristic:\(service.UUID)")
             
             if service.UUID == BEAN_SERVICE_UUID {
                 peripheral.discoverCharacteristics(nil, forService: thisService)
@@ -63,8 +62,6 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             
             for characteristic in service.characteristics! {
                 
-                print("Characteristic:\(characteristic.UUID)")
-                
                 if (characteristic.UUID == BEAN_CHARACTERISTIK_UUID) {
                     //we'll save the reference, we need it to write data
                     mainCharacteristic = characteristic
@@ -73,7 +70,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                     peripheral.setNotifyValue(true, forCharacteristic: characteristic)
                     print("Found Bluno Data Characteristic")
                     ///Wysylaj AT co 1 sekunde az do uzyskania OK lub 5 sekund
-                    
+                    sendData("")
                     sendData("ATI1") ///zapytaj o wszystkie dane
                 }
                 
@@ -136,11 +133,11 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                                 changed = true
                             }
                             else{
-                                print("Linia \(line)")
+                                //print("Linia: \(line)")
                             }
                         }
                         else{
-                            print("OKKKK")
+                            //print("OKKKK")
                         }
                         
                         mainString = mainString.substringFromIndex(range.location + 2)
@@ -149,10 +146,10 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                         break
                     }
                 }
-                print("Zostalo \(mainString)")
+                //print("Zostalo \(mainString)")
                 
                 if changed {
-                    NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "DataBluetoothChanged", object: self))
+                    NSNotificationCenter.defaultCenter().postNotificationName("DataBluetoothChanged", object: self)
                 }
             }
         }
@@ -231,7 +228,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     func startTimerReadValue(){
         readValueTimer?.invalidate()
         
-        readValueTimer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(DataOFBoard.readReadValue), userInfo: nil, repeats: true)
+        readValueTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(DataOFBoard.readReadValue), userInfo: nil, repeats: true)
         
         readValueTimer?.fire()
     }
@@ -243,14 +240,24 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     @objc private func sendSpeedValue(){
         let dane = UnsafeMutablePointer<UInt8>.alloc(2)
         
-        dane[0] = UInt8(_value)
-        dane[1] = 0
+        if(_value >= 0)
+        {
+            dane[0] = UInt8(_value)
+            dane[1] = 1
+        }
+        else
+        {
+            dane[0] = UInt8(abs(_value))
+            dane[1] = 0
+        }
+        
+        
         
         let crc = crc8(dane, 2)
         
         dane.dealloc(2)
         
-        sendData("AT+SPED=\(_value),0,\(crc)")
+        sendData("AT+SPED=\(dane[0]),\(dane[1]),\(crc)")
     }
     
     @objc private func readReadValue(){
@@ -287,8 +294,8 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     // MARK: Zmienne do odczytu i zapisu
     
     ///Wysylaj co 0,25 sekundy
-    private var _value: UInt = 0
-    var value: UInt{
+    private var _value: Int = 0
+    var value: Int{
         set
         {
             if newValue != _value {
