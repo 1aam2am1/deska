@@ -19,11 +19,51 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qr2-yu-rxw">
-                                <rect key="frame" x="0.0" y="20" width="600" height="531"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MnA-pc-UoA" userLabel="Progres">
+                                <rect key="frame" x="20" y="20" width="560" height="45"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JUU-LF-xvl" userLabel="Batery">
+                                        <rect key="frame" x="0.0" y="24" width="100" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="100" id="6RV-lq-f3j"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9nP-nB-iYo" userLabel="Cell">
+                                        <rect key="frame" x="280" y="24" width="200" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="0rn-Ij-YcU"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RaO-mk-vRS">
+                                        <rect key="frame" x="0.0" y="10" width="560" height="4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="4" id="EWJ-ce-Ehs"/>
+                                        </constraints>
+                                    </progressView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="RaO-mk-vRS" firstAttribute="leading" secondItem="MnA-pc-UoA" secondAttribute="leading" id="3Yv-DC-4Qv"/>
+                                    <constraint firstItem="9nP-nB-iYo" firstAttribute="centerX" secondItem="MnA-pc-UoA" secondAttribute="centerX" constant="100" id="7b8-y9-VmQ"/>
+                                    <constraint firstItem="JUU-LF-xvl" firstAttribute="leading" secondItem="MnA-pc-UoA" secondAttribute="leading" id="9wp-8G-lJv"/>
+                                    <constraint firstItem="JUU-LF-xvl" firstAttribute="top" secondItem="RaO-mk-vRS" secondAttribute="bottom" constant="10" id="EdQ-zH-hgt"/>
+                                    <constraint firstItem="RaO-mk-vRS" firstAttribute="top" secondItem="MnA-pc-UoA" secondAttribute="top" constant="10" id="F7c-OW-d3I"/>
+                                    <constraint firstAttribute="trailing" secondItem="RaO-mk-vRS" secondAttribute="trailing" id="Mo9-Ww-1VR"/>
+                                    <constraint firstAttribute="bottom" secondItem="JUU-LF-xvl" secondAttribute="bottom" id="NDG-Gd-f4S"/>
+                                    <constraint firstItem="9nP-nB-iYo" firstAttribute="top" secondItem="RaO-mk-vRS" secondAttribute="bottom" constant="10" id="ZNO-IS-Jky"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qr2-yu-rxw" userLabel="Slider">
+                                <rect key="frame" x="20" y="65" width="560" height="486"/>
                                 <subviews>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" minValue="-100" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="owO-pv-l3K">
-                                        <rect key="frame" x="69" y="251" width="462" height="31"/>
+                                        <rect key="frame" x="70" y="228" width="421" height="31"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <accessibilityTraits key="traits" playsSound="YES"/>
                                         </accessibility>
@@ -34,11 +74,22 @@
                                             <action selector="slider_action:" destination="9pv-A4-QxB" eventType="valueChanged" id="KRH-OZ-FKN"/>
                                         </connections>
                                     </slider>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f3v-IF-Prm" userLabel="Speed">
+                                        <rect key="frame" x="0.0" y="5" width="200" height="21"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="200" id="ddC-wX-hod"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="owO-pv-l3K" firstAttribute="centerY" secondItem="qr2-yu-rxw" secondAttribute="centerY" id="7kF-Dt-hoI"/>
                                     <constraint firstItem="owO-pv-l3K" firstAttribute="centerX" secondItem="qr2-yu-rxw" secondAttribute="centerX" id="NK2-l9-sEj"/>
+                                    <constraint firstItem="f3v-IF-Prm" firstAttribute="top" secondItem="qr2-yu-rxw" secondAttribute="top" constant="5" id="Y9m-eD-Me9"/>
+                                    <constraint firstItem="f3v-IF-Prm" firstAttribute="leading" secondItem="qr2-yu-rxw" secondAttribute="leading" id="dJZ-iR-24j"/>
                                     <constraint firstItem="owO-pv-l3K" firstAttribute="width" secondItem="qr2-yu-rxw" secondAttribute="height" multiplier="0.9" constant="-20" id="mZS-57-QBm"/>
                                 </constraints>
                             </view>
@@ -46,13 +97,20 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="4ug-Mw-9AY" firstAttribute="top" secondItem="qr2-yu-rxw" secondAttribute="bottom" id="2Jb-rA-WAY"/>
-                            <constraint firstAttribute="trailing" secondItem="qr2-yu-rxw" secondAttribute="trailing" id="QtJ-h3-GcQ"/>
-                            <constraint firstItem="qr2-yu-rxw" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" id="lgF-pZ-obs"/>
-                            <constraint firstItem="qr2-yu-rxw" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leading" id="va0-I2-Xex"/>
+                            <constraint firstItem="MnA-pc-UoA" firstAttribute="top" secondItem="Ia1-K6-d13" secondAttribute="bottom" id="BNt-IP-1sy"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="MnA-pc-UoA" secondAttribute="trailing" id="Jta-Oa-XgP"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="qr2-yu-rxw" secondAttribute="trailing" id="QtJ-h3-GcQ"/>
+                            <constraint firstItem="qr2-yu-rxw" firstAttribute="top" secondItem="MnA-pc-UoA" secondAttribute="bottom" id="fjv-sQ-EgB"/>
+                            <constraint firstItem="MnA-pc-UoA" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leadingMargin" id="tRv-cT-sUH"/>
+                            <constraint firstItem="qr2-yu-rxw" firstAttribute="leading" secondItem="tsR-hK-woN" secondAttribute="leadingMargin" id="va0-I2-Xex"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Main" image="home" id="acW-dT-cKf"/>
                     <connections>
+                        <outlet property="Batery" destination="JUU-LF-xvl" id="2ob-td-HxZ"/>
+                        <outlet property="Cell" destination="9nP-nB-iYo" id="MZe-Y7-8tn"/>
+                        <outlet property="ProgressBar" destination="RaO-mk-vRS" id="l9S-sN-O4P"/>
+                        <outlet property="Speed" destination="f3v-IF-Prm" id="Lnc-VW-FRP"/>
                         <outlet property="slider" destination="owO-pv-l3K" id="tmw-ZY-J1o"/>
                     </connections>
                 </viewController>

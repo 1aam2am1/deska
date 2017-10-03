@@ -53,7 +53,7 @@ class OpcjeViewController: UITableViewController {
             case 0:
                 cell.textLabel?.text = "RPM: \(DataOFBoard.sharedInstance.rpm)"
             case 1:
-                cell.textLabel?.text = "Volt: \(DataOFBoard.sharedInstance.volt)"
+                cell.textLabel?.text = "Volt: \(Float(DataOFBoard.sharedInstance.volt) * 1.1 * 16 / 1024)V"
             case 2:
                 cell.textLabel?.text = "Temperature: \(DataOFBoard.sharedInstance.temp)"
             case 3:
@@ -243,7 +243,6 @@ class OpcjeViewController: UITableViewController {
         DataOFBoard.sharedInstance.startTimerReadValue()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.tableView.reloadData), name: "DataBluetoothChanged", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.tableView.reloadData), name: "DataBluetoothConnected", object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -252,7 +251,6 @@ class OpcjeViewController: UITableViewController {
         DataOFBoard.sharedInstance.stopTimerReadValue()
 
         NSNotificationCenter.defaultCenter().removeObserver(self, name: "DataBluetoothChanged", object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "DataBluetoothConnected", object: nil)
     }
 }
 

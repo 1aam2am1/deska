@@ -204,7 +204,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         peripheral = nil
         mainCharacteristic = nil
         
-        NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "DataBluetoothDisconnectd", object: self))
+        NSNotificationCenter.defaultCenter().postNotificationName("DataBluetoothChanged", object: self)
     }
     
     // MARK: Funkcje do deski
@@ -225,10 +225,10 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         sendSpeedTimer?.invalidate()
     }
     
-    func startTimerReadValue(){
+    func startTimerReadValue(seconds: NSTimeInterval = 2){
         readValueTimer?.invalidate()
         
-        readValueTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(DataOFBoard.readReadValue), userInfo: nil, repeats: true)
+        readValueTimer = NSTimer.scheduledTimerWithTimeInterval(seconds, target: self, selector: #selector(DataOFBoard.readReadValue), userInfo: nil, repeats: true)
         
         readValueTimer?.fire()
     }
@@ -276,7 +276,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         set
         {
             _connected = newValue
-            NSNotificationCenter.defaultCenter().postNotification(NSNotification(name: "DataBluetoothConnected", object: self))
+            NSNotificationCenter.defaultCenter().postNotificationName("DataBluetoothChanged", object: self)
         }
         get
         {
