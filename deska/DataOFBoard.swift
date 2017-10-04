@@ -24,9 +24,9 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     var manager: CBCentralManager? //menadzer urzadzen
     var peripheral: CBPeripheral? //urzadzenie
     var mainCharacteristic: CBCharacteristic? //charakterystyka polaczenia
-    private var mainString: NSString = ""
-    private var sendSpeedTimer: NSTimer?
-    private var readValueTimer: NSTimer?
+    fileprivate var mainString: NSString = ""
+    fileprivate var sendSpeedTimer: Timer?
+    fileprivate var readValueTimer: Timer?
     
     // MARK: SharedInstance
     
@@ -34,40 +34,40 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     // MARK: Akcje
     
-    func centralManagerDidUpdateState(central: CBCentralManager) {
+    func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch(central.state){
-        case .PoweredOn: break
+        case .poweredOn: break
         default:
             disconnect()
         }
     }
     
-    func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
+    func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         disconnect()
     }
     
-    func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         
         for service in peripheral.services! {
             let thisService = service as CBService
             
-            if service.UUID == BEAN_SERVICE_UUID {
-                peripheral.discoverCharacteristics(nil, forService: thisService)
+            if service.uuid == BEAN_SERVICE_UUID {
+                peripheral.discoverCharacteristics(nil, for: thisService)
             }
         }
     }
     
-    func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
-        if (service.UUID == BEAN_SERVICE_UUID) {
+    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+        if (service.uuid == BEAN_SERVICE_UUID) {
             
             for characteristic in service.characteristics! {
                 
-                if (characteristic.UUID == BEAN_CHARACTERISTIK_UUID) {
+                if (characteristic.uuid == BEAN_CHARACTERISTIK_UUID) {
                     //we'll save the reference, we need it to write data
                     mainCharacteristic = characteristic
                     
                     //Set Notify is useful to read incoming data async
-                    peripheral.setNotifyValue(true, forCharacteristic: characteristic)
+                    peripheral.setNotifyValue(true, for: characteristic)
                     print("Found Bluno Data Characteristic")
                     ///Wysylaj AT co 1 sekunde az do uzyskania OK lub 5 sekund
                     sendData("")
@@ -79,27 +79,27 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     
-    func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
-        if characteristic.UUID == BEAN_CHARACTERISTIK_UUID{
+    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+        if characteristic.uuid == BEAN_CHARACTERISTIK_UUID{
             if characteristic.value != nil{
-                let stringValue = NSString(data: characteristic.value!, encoding: NSASCIIStringEncoding)!
+                let stringValue = NSString(data: characteristic.value!, encoding: String.Encoding.ascii.rawValue)!
                 
-                mainString = (mainString as String) + (stringValue as String)
+                mainString = (mainString as String) + (stringValue as String) as NSString
                 
                 var changed: Bool = false
                 
                 while true{
-                    let range = mainString.rangeOfString("\r" + "\n")
+                    let range = mainString.range(of: "\r" + "\n")
                     if range.location != NSNotFound {
                         
-                        let line = mainString.substringToIndex(range.location) as NSString
+                        let line = mainString.substring(to: range.location) as NSString
                         
                         if line != "OK" {
-                            let range = line.rangeOfString(": ")
+                            let range = line.range(of: ": ")
                             
                             if range.location != NSNotFound {
-                                let command = line.substringToIndex(range.location)
-                                let data = line.substringFromIndex(range.location + 2)
+                                let command = line.substring(to: range.location)
+                                let data = line.substring(from: range.location + 2)
                                 
                                 switch(command){
                                 case "+RRPM" :
@@ -140,7 +140,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                             //print("OKKKK")
                         }
                         
-                        mainString = mainString.substringFromIndex(range.location + 2)
+                        mainString = mainString.substring(from: range.location + 2) as NSString
                     }
                     else{
                         break
@@ -149,23 +149,23 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                 //print("Zostalo \(mainString)")
                 
                 if changed {
-                    NSNotificationCenter.defaultCenter().postNotificationName("DataBluetoothChanged", object: self)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "DataBluetoothChanged"), object: self)
                 }
             }
         }
     }
     
-    private func sendData(data: NSData){
+    fileprivate func sendData(_ data: Data){
         if peripheral != nil && mainCharacteristic != nil{
-            peripheral?.writeValue(data, forCharacteristic: mainCharacteristic!, type: .WithoutResponse)
+            peripheral?.writeValue(data, for: mainCharacteristic!, type: .withoutResponse)
         }
         else{
-            print("Data not send:\(NSString(data: data, encoding: NSASCIIStringEncoding))")
+            print("Data not send:\(NSString(data: data, encoding: String.Encoding.ascii.rawValue)!)")
         }
     }
     
-    private func sendData(data: String){
-        if let encodedData = (data + "\r" + "\n").dataUsingEncoding(NSASCIIStringEncoding) {
+    fileprivate func sendData(_ data: String){
+        if let encodedData = (data + "\r" + "\n").data(using: String.Encoding.ascii) {
             sendData(encodedData)
         }
         else{
@@ -177,7 +177,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     // MARK: Funkcje
     
-    private override init(){
+    fileprivate override init(){
         super.init()
     }
     
@@ -190,7 +190,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         peripheral?.delegate = self
         manager?.delegate = self
         
-        connected = peripheral?.name ?? peripheral?.identifier.UUIDString ?? ""
+        connected = peripheral?.name ?? peripheral?.identifier.uuidString ?? ""
         
         peripheral?.discoverServices(nil)
     }
@@ -204,7 +204,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         peripheral = nil
         mainCharacteristic = nil
         
-        NSNotificationCenter.defaultCenter().postNotificationName("DataBluetoothChanged", object: self)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "DataBluetoothChanged"), object: self)
     }
     
     // MARK: Funkcje do deski
@@ -216,7 +216,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     func startTimerSpeedValue(){
         sendSpeedTimer?.invalidate()
         
-        sendSpeedTimer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: #selector(DataOFBoard.sendSpeedValue), userInfo: nil, repeats: true)
+        sendSpeedTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(DataOFBoard.sendSpeedValue), userInfo: nil, repeats: true)
         
         sendSpeedTimer?.fire()
     }
@@ -225,10 +225,10 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         sendSpeedTimer?.invalidate()
     }
     
-    func startTimerReadValue(seconds: NSTimeInterval = 2){
+    func startTimerReadValue(_ seconds: TimeInterval = 2){
         readValueTimer?.invalidate()
         
-        readValueTimer = NSTimer.scheduledTimerWithTimeInterval(seconds, target: self, selector: #selector(DataOFBoard.readReadValue), userInfo: nil, repeats: true)
+        readValueTimer = Timer.scheduledTimer(timeInterval: seconds, target: self, selector: #selector(DataOFBoard.readReadValue), userInfo: nil, repeats: true)
         
         readValueTimer?.fire()
     }
@@ -237,8 +237,8 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         readValueTimer?.invalidate()
     }
     
-    @objc private func sendSpeedValue(){
-        let dane = UnsafeMutablePointer<UInt8>.alloc(2)
+    @objc fileprivate func sendSpeedValue(){
+        let dane = UnsafeMutablePointer<UInt8>.allocate(capacity: 2)
         
         if(_value >= 0)
         {
@@ -251,16 +251,14 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             dane[1] = 0
         }
         
-        
-        
         let crc = crc8(dane, 2)
         
-        dane.dealloc(2)
-        
         sendData("AT+SPED=\(dane[0]),\(dane[1]),\(crc)")
+        
+        dane.deallocate(capacity: 2)
     }
     
-    @objc private func readReadValue(){
+    @objc fileprivate func readReadValue(){
         //zamien na liste 4 komend w powietrzu
         sendData("AT+RRPM?")
         sendData("AT+RBAT?")
@@ -271,12 +269,12 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     // MARK: Zmienne do odczytu
     
-    private var _connected: String?
-    private(set) var connected: String{
+    fileprivate var _connected: String?
+    fileprivate(set) var connected: String{
         set
         {
             _connected = newValue
-            NSNotificationCenter.defaultCenter().postNotificationName("DataBluetoothChanged", object: self)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: "DataBluetoothChanged"), object: self)
         }
         get
         {
@@ -285,16 +283,16 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     }
     
     
-    private(set) var rpm: UInt = 0
-    private(set) var volt: UInt = 0
-    private(set) var temp: Int = 0
-    private(set) var tempOfControler: Int = 0
-    private(set) var weight: UInt = 0
+    fileprivate(set) var rpm: UInt = 0
+    fileprivate(set) var volt: UInt = 0
+    fileprivate(set) var temp: Int = 0
+    fileprivate(set) var tempOfControler: Int = 0
+    fileprivate(set) var weight: UInt = 0
     
     // MARK: Zmienne do odczytu i zapisu
     
     ///Wysylaj co 0,25 sekundy
-    private var _value: Int = 0
+    fileprivate var _value: Int = 0
     var value: Int{
         set
         {
@@ -306,7 +304,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
         get
         {
-            return _value ?? 0
+            return _value 
         }
     }
     

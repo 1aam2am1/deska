@@ -16,11 +16,11 @@ class OpcjeViewController: UITableViewController {
     
     // MARK: Akcje
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 4 //blututh, dane i opcje, o tworcach
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch(section)
         {
         case 0:
@@ -37,17 +37,17 @@ class OpcjeViewController: UITableViewController {
         
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch(indexPath.section)
         {
         case 0:
-            let cell = tableView.dequeueReusableCellWithIdentifier("Connect", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Connect", for: indexPath)
             
             cell.textLabel?.text = "Addres: \(DataOFBoard.sharedInstance.connected)"
             
             return cell
         case 1:
-            let cell = tableView.dequeueReusableCellWithIdentifier("Data", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Data", for: indexPath)
             
             switch(indexPath.row){
             case 0:
@@ -68,29 +68,29 @@ class OpcjeViewController: UITableViewController {
         case 2:
             switch(indexPath.row){
             case 1, 2, 5:
-                let cell = tableView.dequeueReusableCellWithIdentifier("BoolOptions", forIndexPath: indexPath) as! BoolOptionsViewCell
+                let cell = tableView.dequeueReusableCell(withIdentifier: "BoolOptions", for: indexPath) as! BoolOptionsViewCell
                 
                 switch(indexPath.row){
                 case 1:
                     cell.label.text = "Led 1:"
-                    cell.Switch.on = DataOFBoard.sharedInstance.led1
-                    cell.handle = {action in DataOFBoard.sharedInstance.led1 = action.on}
+                    cell.Switch.isOn = DataOFBoard.sharedInstance.led1
+                    cell.handle = {action in DataOFBoard.sharedInstance.led1 = action.isOn}
                     break
                 case 2:
                     cell.label.text = "Led 2:"
-                    cell.Switch.on = DataOFBoard.sharedInstance.led2
-                    cell.handle = {action in DataOFBoard.sharedInstance.led2 = action.on}
+                    cell.Switch.isOn = DataOFBoard.sharedInstance.led2
+                    cell.handle = {action in DataOFBoard.sharedInstance.led2 = action.isOn}
                 case 5:
                     cell.label.text = "Require a board sensor:"
-                    cell.Switch.on = DataOFBoard.sharedInstance.requiredBoardSensor
-                    cell.handle = {action in DataOFBoard.sharedInstance.requiredBoardSensor = action.on}
+                    cell.Switch.isOn = DataOFBoard.sharedInstance.requiredBoardSensor
+                    cell.handle = {action in DataOFBoard.sharedInstance.requiredBoardSensor = action.isOn}
                 default:
                     cell.label.text = "Section \(indexPath.section) Row \(indexPath.row)"
                 }
                 
                 return cell
             default:
-                let cell = tableView.dequeueReusableCellWithIdentifier("Options", forIndexPath: indexPath)
+                let cell = tableView.dequeueReusableCell(withIdentifier: "Options", for: indexPath)
                 
                 switch(indexPath.row){
                 case 0:
@@ -111,7 +111,7 @@ class OpcjeViewController: UITableViewController {
                 
             }
         case 3:
-            let cell = tableView.dequeueReusableCellWithIdentifier("About", forIndexPath: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: "About", for: indexPath)
             
             return cell
         default:
@@ -120,7 +120,7 @@ class OpcjeViewController: UITableViewController {
         
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch(section)
         {
         case 0:
@@ -136,24 +136,24 @@ class OpcjeViewController: UITableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 2{
             switch(indexPath.row){
             case 0:
-                let alert = UIAlertController(title: "Reboot", message: "Do you want to reboot board", preferredStyle: .Alert)
-                alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: "OK", style: .Destructive, handler: {action in
+                let alert = UIAlertController(title: "Reboot", message: "Do you want to reboot board", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "OK", style: .destructive, handler: {action in
                     DataOFBoard.sharedInstance.reboot()
                 }))
                 
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.present(alert, animated: true, completion: nil)
                 
-                self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                self.tableView.deselectRow(at: indexPath, animated: true)
             case 1, 2, 5: break
                 //performSegueWithIdentifier("Bool", sender: indexPath.row)
             case 3, 4, 7:
                 //performSegueWithIdentifier("Value", sender: indexPath.row)
-                let alert = UIAlertController(title: "Title", message: nil, preferredStyle: .Alert)
+                let alert = UIAlertController(title: "Title", message: nil, preferredStyle: .alert)
                 
                 switch(indexPath.row){
                 case 3:
@@ -166,12 +166,12 @@ class OpcjeViewController: UITableViewController {
                     alert.title = "Section \(indexPath.section) Row \(indexPath.row)"
                 }
                 
-                alert.addTextFieldWithConfigurationHandler({text in
+                alert.addTextField(configurationHandler: {text in
                     text.placeholder = "Please input"
                 })
                 
-                alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: {action in
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {action in
                     if let text = alert.textFields?[0].text {
                         switch(indexPath.row){
                         case 3:
@@ -188,33 +188,33 @@ class OpcjeViewController: UITableViewController {
                     }
                 }))
                 
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.present(alert, animated: true, completion: nil)
                 
-                self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                self.tableView.deselectRow(at: indexPath, animated: true)
             case 6:
-                let alert = UIAlertController(title: "Control mode", message: nil, preferredStyle: .ActionSheet)
+                let alert = UIAlertController(title: "Control mode", message: nil, preferredStyle: .actionSheet)
 
                 for index in 0..<controlNames.count {
-                    alert.addAction(UIAlertAction(title: controlNames[index], style: .Default, handler: {action in
+                    alert.addAction(UIAlertAction(title: controlNames[index], style: .default, handler: {action in
                         DataOFBoard.sharedInstance.controlMode = UInt(index)
                         self.tableView.reloadData()
                     }))
                 }
                 
-                alert.actions[Int(DataOFBoard.sharedInstance.controlMode)].enabled = false
+                alert.actions[Int(DataOFBoard.sharedInstance.controlMode)].isEnabled = false
                 
-                alert.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
                 
-                self.presentViewController(alert, animated: true, completion: nil)
+                self.present(alert, animated: true, completion: nil)
                 
-                self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                self.tableView.deselectRow(at: indexPath, animated: true)
                 //performSegueWithIdentifier("Control", sender: indexPath.row)
             default: break
             }
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "Bluetooth" {
             //let bluetoothView : BluetoothViewController = segue.destinationViewController as! BluetoothViewController
             
@@ -237,20 +237,20 @@ class OpcjeViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         DataOFBoard.sharedInstance.startTimerReadValue()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(self.tableView.reloadData), name: "DataBluetoothChanged", object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.tableView.reloadData), name: NSNotification.Name(rawValue: "DataBluetoothChanged"), object: nil)
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         DataOFBoard.sharedInstance.stopTimerReadValue()
 
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "DataBluetoothChanged", object: nil)
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "DataBluetoothChanged"), object: nil)
     }
 }
 

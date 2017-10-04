@@ -12,9 +12,9 @@ class AppTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     // MARK: Akcje
     
-    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         if let vc = viewController as? UINavigationController {
-            vc.popToRootViewControllerAnimated(false)
+            vc.popToRootViewController(animated: false)
         }
     }
     

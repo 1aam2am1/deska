@@ -15,11 +15,11 @@ class BoolOptionsViewCell: UITableViewCell{
     @IBOutlet var label: UILabel!
     @IBOutlet var Switch: UISwitch!
     
-    var handle: ((UISwitch!)->Void)?
+    var handle: ((UISwitch)->Void)?
     
     // MARK: Akcje
     
-    @IBAction func valueChanged(sender: AnyObject) {
+    @IBAction func valueChanged(_ sender: AnyObject) {
         handle?(sender as! UISwitch)
     }
     
