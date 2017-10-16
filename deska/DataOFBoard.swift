@@ -216,7 +216,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     func startTimerSpeedValue(){
         sendSpeedTimer?.invalidate()
         
-        sendSpeedTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(DataOFBoard.sendSpeedValue), userInfo: nil, repeats: true)
+        sendSpeedTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(DataOFBoard.sendSpeedValue), userInfo: nil, repeats: true)
         
         sendSpeedTimer?.fire()
     }

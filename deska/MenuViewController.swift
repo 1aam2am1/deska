@@ -44,15 +44,29 @@ class MenuViewController: UIViewController {
         var progress: Float = 0
         
         progress = (Float(DataOFBoard.sharedInstance.volt) - 790) / (979 - 790)
-        
+
         progress = progress < 0 ? 0 : progress
-        progress = progress > 0 ? 1 : progress
+        progress = progress > 1 ? 1 : progress
         
         ProgressBar.progress = progress
+        
+        if progress <= 0.3 {
+            ProgressBar.progressTintColor = UIColor.red
+        }
+        else if progress > 0.7 {
+            ProgressBar.progressTintColor = UIColor.green
+        }
+        else
+        {
+            ProgressBar.progressTintColor = UIColor.blue
+        }
+        
         
         Batery.text = "Batery: \(Float(DataOFBoard.sharedInstance.volt) * 1.1 * 16 / 1024)V"
         Cell.text = "Cell: \(Float(DataOFBoard.sharedInstance.volt) * 1.1 * 16 / 1024 / 4)V"
         Speed.text = "Speed: \(DataOFBoard.sharedInstance.rpm)Km/h"
+        
+        self.view.setNeedsDisplay()
     }
     
     // MARK: Funkcje
@@ -63,6 +77,7 @@ class MenuViewController: UIViewController {
         self.slider.transform = CGAffineTransform(rotationAngle: -(.pi / 2))
         
         self.methodOfReceivedNotification()
+        //self.slider.thumbImage(for: .normal)
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,16 +89,16 @@ class MenuViewController: UIViewController {
         super.viewWillAppear(animated)
         
         DataOFBoard.sharedInstance.startTimerSpeedValue()
-        DataOFBoard.sharedInstance.startTimerReadValue(10)
+        //DataOFBoard.sharedInstance.startTimerReadValue(1)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification), name: NSNotification.Name(rawValue: "DataBluetoothChanged"), object: DataOFBoard.sharedInstance)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification), name: NSNotification.Name(rawValue: "DataBluetoothChanged"), object: nil)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         DataOFBoard.sharedInstance.stopTimerSpeedValue()
-        DataOFBoard.sharedInstance.stopTimerReadValue()
+        //DataOFBoard.sharedInstance.stopTimerReadValue()
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "DataBluetoothChanged"), object: nil)
     }

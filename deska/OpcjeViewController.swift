@@ -16,6 +16,10 @@ class OpcjeViewController: UITableViewController {
     
     // MARK: Akcje
     
+    @objc func methodOfReceivedNotification() {
+        self.tableView.reloadData()
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 4 //blututh, dane i opcje, o tworcach
     }
@@ -240,15 +244,15 @@ class OpcjeViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        DataOFBoard.sharedInstance.startTimerReadValue()
+        //DataOFBoard.sharedInstance.startTimerReadValue()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.tableView.reloadData), name: NSNotification.Name(rawValue: "DataBluetoothChanged"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(methodOfReceivedNotification), name: NSNotification.Name(rawValue: "DataBluetoothChanged"), object: nil)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        DataOFBoard.sharedInstance.stopTimerReadValue()
+        //DataOFBoard.sharedInstance.stopTimerReadValue()
 
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "DataBluetoothChanged"), object: nil)
     }

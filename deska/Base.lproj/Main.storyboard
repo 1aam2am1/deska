@@ -67,7 +67,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qr2-yu-rxw" userLabel="Slider">
                                 <rect key="frame" x="16" y="65" width="343" height="553"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" minValue="-100" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="owO-pv-l3K">
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" minValue="-220" maxValue="220" translatesAutoresizingMaskIntoConstraints="NO" id="owO-pv-l3K">
                                         <rect key="frame" x="-68.5" y="261.5" width="481" height="31"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <accessibilityTraits key="traits" playsSound="YES"/>
@@ -195,7 +195,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UvQ-GY-8hL">
-                                            <rect key="frame" x="15" y="12" width="295" height="20"/>
+                                            <rect key="frame" x="8" y="12" width="302" height="20"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -209,7 +209,7 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="h5b-aR-PdC" firstAttribute="centerY" secondItem="cqM-ah-vBQ" secondAttribute="centerY" id="9vf-YD-wTx"/>
-                                        <constraint firstItem="UvQ-GY-8hL" firstAttribute="leading" secondItem="cqM-ah-vBQ" secondAttribute="leadingMargin" constant="7" id="Afu-Pl-2y4"/>
+                                        <constraint firstItem="UvQ-GY-8hL" firstAttribute="leading" secondItem="cqM-ah-vBQ" secondAttribute="leadingMargin" id="Afu-Pl-2y4"/>
                                         <constraint firstItem="h5b-aR-PdC" firstAttribute="leading" secondItem="UvQ-GY-8hL" secondAttribute="trailing" constant="8" id="BZS-JM-Sc5"/>
                                         <constraint firstItem="h5b-aR-PdC" firstAttribute="trailing" secondItem="cqM-ah-vBQ" secondAttribute="trailingMargin" id="ROa-HO-qKz"/>
                                         <constraint firstItem="UvQ-GY-8hL" firstAttribute="centerY" secondItem="cqM-ah-vBQ" secondAttribute="centerY" id="vz0-KL-MZ2"/>
