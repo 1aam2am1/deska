@@ -9,6 +9,82 @@
 import Foundation
 import CoreBluetooth
 
+class RefreshTimer
+{
+    fileprivate var seconds: [TimeInterval]
+    var timer: Timer?
+    let function: ()-> Void
+    
+    init(function t: @escaping (()-> Void))
+    {
+        function = t
+        seconds = []
+        
+    }
+    
+    func start(seconds s: TimeInterval)
+    {
+        seconds.append(s)
+        
+        timer?.invalidate()
+        
+        timer = Timer.scheduledTimer(timeInterval: seconds.min()!, target: self, selector: #selector(fire), userInfo: nil, repeats: true)
+        
+        fire()
+    }
+    
+    func stop(seconds s: TimeInterval)
+    {
+        if let i = seconds.index(where: {$0 == s}) {
+            seconds.remove(at: i)
+        }
+        
+        if seconds.count == 0
+        {
+            timer?.invalidate()
+            timer = nil
+        }
+    }
+    
+    func up()
+    {
+        if seconds.count > 0
+        {
+            timer = Timer.scheduledTimer(timeInterval: seconds.min()!, target: self, selector: #selector(fire), userInfo: nil, repeats: true)
+            
+            fire()
+        }
+    }
+    
+    func down()
+    {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    @objc func fire()
+    {
+        function()
+    }
+}
+
+class LockTimer
+{
+    let timer: RefreshTimer
+    let seconds: TimeInterval
+    init(timer t: RefreshTimer, seconds s: TimeInterval = 2)
+    {
+        timer = t
+        seconds = s
+        timer.start(seconds: s)
+    }
+    
+    deinit
+    {
+        timer.stop(seconds: seconds)
+    }
+}
+
 class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
 {
     
@@ -25,9 +101,9 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     var peripheral: CBPeripheral? //urzadzenie
     var mainCharacteristic: CBCharacteristic? //charakterystyka polaczenia
     fileprivate var mainString: NSString = ""
-    fileprivate var sendSpeedTimer: Timer?
-    fileprivate var readValueTimer: Timer?
-    
+    private(set) lazy var sendSpeedTimer: RefreshTimer = RefreshTimer(function: {[unowned self] in self.sendSpeedValue()})
+    private(set) lazy var readValueTimer: RefreshTimer = RefreshTimer(function: {[unowned self] in self.readReadValue()})
+
     // MARK: SharedInstance
     
     static let sharedInstance = DataOFBoard()
@@ -68,7 +144,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
                     
                     //Set Notify is useful to read incoming data async
                     peripheral.setNotifyValue(true, for: characteristic)
-                    print("Found Bluno Data Characteristic")
+                    //print("Found Bluno Data Characteristic")
                     ///Wysylaj AT co 1 sekunde az do uzyskania OK lub 5 sekund
                     sendData("")
                     sendData("ATI1") ///zapytaj o wszystkie dane
@@ -160,7 +236,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             peripheral?.writeValue(data, for: mainCharacteristic!, type: .withoutResponse)
         }
         else{
-            print("Data not send:\(NSString(data: data, encoding: String.Encoding.ascii.rawValue)!)")
+            ///print("Data not send:\(NSString(data: data, encoding: String.Encoding.ascii.rawValue)!)")
         }
     }
     
@@ -169,7 +245,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
             sendData(encodedData)
         }
         else{
-            print("Dane nie mogły być przekształcone")
+            ///print("Dane nie mogły być przekształcone")
         }
     }
     
@@ -179,6 +255,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
     
     fileprivate override init(){
         super.init()
+        
     }
     
     func connectDevice(peripheral per: CBPeripheral, manager man: CBCentralManager){
@@ -213,31 +290,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         sendData("AT+RST");
     }
     
-    func startTimerSpeedValue(){
-        sendSpeedTimer?.invalidate()
-        
-        sendSpeedTimer = Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(DataOFBoard.sendSpeedValue), userInfo: nil, repeats: true)
-        
-        sendSpeedTimer?.fire()
-    }
-    
-    func stopTimerSpeedValue(){
-        sendSpeedTimer?.invalidate()
-    }
-    
-    func startTimerReadValue(_ seconds: TimeInterval = 2){
-        readValueTimer?.invalidate()
-        
-        readValueTimer = Timer.scheduledTimer(timeInterval: seconds, target: self, selector: #selector(DataOFBoard.readReadValue), userInfo: nil, repeats: true)
-        
-        readValueTimer?.fire()
-    }
-    
-    func stopTimerReadValue(){
-        readValueTimer?.invalidate()
-    }
-    
-    @objc fileprivate func sendSpeedValue(){
+    func sendSpeedValue(){
         let dane = UnsafeMutablePointer<UInt8>.allocate(capacity: 2)
         
         if(_value >= 0)
@@ -258,7 +311,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         dane.deallocate(capacity: 2)
     }
     
-    @objc fileprivate func readReadValue(){
+    func readReadValue(){
         //zamien na liste 4 komend w powietrzu
         sendData("AT+RRPM?")
         sendData("AT+RBAT?")
@@ -308,7 +361,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     
-    var _led1 :Bool = false
+    fileprivate var _led1 :Bool = false
     var led1: Bool{
         set{
             if newValue != _led1 {
@@ -321,7 +374,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     
-    var _led2 :Bool = false
+    fileprivate var _led2 :Bool = false
     var led2: Bool{
         set{
             if newValue != _led2 {
@@ -334,7 +387,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     
-    var _acceleration: UInt = 0
+    fileprivate var _acceleration: UInt = 0
     var acceleration: UInt{
         set{
             if newValue != _acceleration {
@@ -347,7 +400,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     
-    var _maxBreak: UInt = 0
+    fileprivate var _maxBreak: UInt = 0
     var maxBreak: UInt{
         set{
             if newValue != _maxBreak {
@@ -360,7 +413,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     
-    var _requiredBoardSensor: Bool = false
+    fileprivate var _requiredBoardSensor: Bool = false
     var requiredBoardSensor: Bool{
         set{
             if newValue != _requiredBoardSensor {
@@ -373,7 +426,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     
-    var _controlMode: UInt = 0
+    fileprivate var _controlMode: UInt = 0
     var controlMode: UInt{
         set{
             if newValue != _controlMode {
@@ -386,7 +439,7 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         }
     }
     
-    var _battery: UInt = 0
+    fileprivate var _battery: UInt = 0
     var battery: UInt{
         set{
             if newValue != _battery {

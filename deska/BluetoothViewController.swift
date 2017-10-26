@@ -62,12 +62,27 @@ class BluetoothViewController: UITableViewController, CBCentralManagerDelegate {
         switch(central.state)
         {
         case .poweredOn:
-            print("On")
             central.scanForPeripherals(withServices: nil, options: nil)
         case .poweredOff:
             fallthrough
         default:
-            let alert = UIAlertController(title: nil, message: "Eroor Code: \(central.state.rawValue)", preferredStyle: .alert)
+            var message: String
+            switch(central.state)
+            {
+            case .poweredOff:
+                message = "Bluetooth is off"
+            case .poweredOn:
+                message = "OK?"
+            case .resetting:
+                message = "Bluetooth is resseting"
+            case .unauthorized:
+                message = "App is not authorized"
+            case .unknown:
+                message = "Unknown state of bluetooth"
+            case .unsupported:
+                message = "Bluetooth is unsuported"
+            }
+            let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .destructive, handler: {action in
                 self.navigationController?.popViewController(animated: true)
             }))

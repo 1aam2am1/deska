@@ -16,7 +16,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        DataOFBoard.sharedInstance.startTimerReadValue()
         
         return true
     }
@@ -24,14 +23,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        
+        DataOFBoard.sharedInstance.sendSpeedTimer.down()
+        DataOFBoard.sharedInstance.readValueTimer.down()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         
-        DataOFBoard.sharedInstance.stopTimerSpeedValue()
-        DataOFBoard.sharedInstance.stopTimerReadValue()
+
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -39,15 +40,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let TabBarController = application.keyWindow?.rootViewController as! UITabBarController
         
-        if ((TabBarController.selectedViewController as? MenuViewController) != nil){
-            DataOFBoard.sharedInstance.startTimerSpeedValue()
+        if let menu = TabBarController.selectedViewController as? MenuViewController
+        {
+            menu.slider_action(menu.slider)
         }
         
-        let navigationController = TabBarController.selectedViewController as? UINavigationController
+        TabBarController.selectedViewController?.view.setNeedsDisplay() ///reload view
         
-        if ((navigationController?.visibleViewController as? OpcjeViewController) != nil){
-            DataOFBoard.sharedInstance.startTimerReadValue()
-        }
+        DataOFBoard.sharedInstance.sendSpeedTimer.up()
+        DataOFBoard.sharedInstance.readValueTimer.up()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

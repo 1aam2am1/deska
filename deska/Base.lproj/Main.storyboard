@@ -5,7 +5,7 @@
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13174"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -67,14 +67,11 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qr2-yu-rxw" userLabel="Slider">
                                 <rect key="frame" x="16" y="65" width="343" height="553"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" minValue="-220" maxValue="220" translatesAutoresizingMaskIntoConstraints="NO" id="owO-pv-l3K">
-                                        <rect key="frame" x="-68.5" y="261.5" width="481" height="31"/>
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="center" minValue="-220" maxValue="220" translatesAutoresizingMaskIntoConstraints="NO" id="owO-pv-l3K" customClass="AllSlider" customModule="deska" customModuleProvider="target">
+                                        <rect key="frame" x="-68.5" y="105" width="481" height="344"/>
                                         <accessibility key="accessibilityConfiguration">
                                             <accessibilityTraits key="traits" playsSound="YES"/>
                                         </accessibility>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="30" id="48u-D7-e8g"/>
-                                        </constraints>
                                         <connections>
                                             <action selector="slider_action:" destination="9pv-A4-QxB" eventType="valueChanged" id="KRH-OZ-FKN"/>
                                         </connections>
@@ -97,6 +94,7 @@
                                     <constraint firstItem="f3v-IF-Prm" firstAttribute="top" secondItem="qr2-yu-rxw" secondAttribute="top" constant="5" id="Y9m-eD-Me9"/>
                                     <constraint firstItem="f3v-IF-Prm" firstAttribute="leading" secondItem="qr2-yu-rxw" secondAttribute="leading" id="dJZ-iR-24j"/>
                                     <constraint firstItem="owO-pv-l3K" firstAttribute="width" secondItem="qr2-yu-rxw" secondAttribute="height" multiplier="0.9" constant="-20" id="mZS-57-QBm"/>
+                                    <constraint firstItem="owO-pv-l3K" firstAttribute="height" secondItem="qr2-yu-rxw" secondAttribute="width" id="su2-Nw-vY0"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -131,7 +129,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="aPS-7C-QX4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Connect" textLabel="5b0-8X-OAN" style="IBUITableViewCellStyleDefault" id="utU-hD-AB9">
                                 <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
@@ -221,7 +219,7 @@
                                     <outlet property="switch" destination="h5b-aR-PdC" id="4db-Mk-DVb"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="About" textLabel="06c-RM-lnF" style="IBUITableViewCellStyleDefault" id="SY8-pe-zjq" customClass="BoolOptionsViewCell" customModule="deska" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="About" textLabel="06c-RM-lnF" style="IBUITableViewCellStyleDefault" id="SY8-pe-zjq">
                                 <rect key="frame" x="0.0" y="231.5" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="SY8-pe-zjq" id="MrB-Zr-q16">
@@ -241,6 +239,30 @@
                                     <segue destination="QxH-fm-lmS" kind="show" identifier="About" id="Dab-SD-bbb"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Slider" id="LBc-hB-Gm2" customClass="SliderOptionsViewCell" customModule="deska" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="275.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LBc-hB-Gm2" id="EXh-eU-zW5">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="332-8I-R4m" customClass="AllSlider" customModule="deska" customModuleProvider="target">
+                                            <rect key="frame" x="6" y="7" width="363" height="31"/>
+                                            <connections>
+                                                <action selector="valueChanged:" destination="LBc-hB-Gm2" eventType="valueChanged" id="C1T-er-Khd"/>
+                                            </connections>
+                                        </slider>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="332-8I-R4m" firstAttribute="leading" secondItem="EXh-eU-zW5" secondAttribute="leadingMargin" id="Az1-Hh-CkK"/>
+                                        <constraint firstItem="332-8I-R4m" firstAttribute="centerY" secondItem="EXh-eU-zW5" secondAttribute="centerY" id="BYw-cG-4kx"/>
+                                        <constraint firstItem="332-8I-R4m" firstAttribute="trailing" secondItem="EXh-eU-zW5" secondAttribute="trailingMargin" id="GPu-5u-2Tu"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="slider" destination="332-8I-R4m" id="mKH-a6-GHz"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="441-1y-0sK" id="VqT-hK-6gM"/>
@@ -251,7 +273,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Adf-WS-stE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1560" y="407"/>
+            <point key="canvasLocation" x="1559.2" y="406.14692653673166"/>
         </scene>
         <!--Bluetooth-->
         <scene sceneID="tZN-Kp-nmk">

@@ -19,6 +19,8 @@
 		FADB541B1F1BE1D600AC092B /* BluetoothViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB541A1F1BE1D600AC092B /* BluetoothViewController.swift */; };
 		FADB541D1F1C040100AC092B /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FADB541C1F1C040100AC092B /* CoreBluetooth.framework */; };
 		FADB541F1F1D80F900AC092B /* BoolOptionsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB541E1F1D80F900AC092B /* BoolOptionsViewCell.swift */; };
+		FAFACD401FA2496B0061BA04 /* SliderOptionsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFACD3F1FA2496B0061BA04 /* SliderOptionsViewCell.swift */; };
+		FAFACD421FA251CF0061BA04 /* AllSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFACD411FA251CE0061BA04 /* AllSlider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		FADB541A1F1BE1D600AC092B /* BluetoothViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BluetoothViewController.swift; sourceTree = "<group>"; };
 		FADB541C1F1C040100AC092B /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		FADB541E1F1D80F900AC092B /* BoolOptionsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoolOptionsViewCell.swift; sourceTree = "<group>"; };
+		FAFACD3F1FA2496B0061BA04 /* SliderOptionsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderOptionsViewCell.swift; sourceTree = "<group>"; };
+		FAFACD411FA251CE0061BA04 /* AllSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllSlider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +86,8 @@
 				FADB541A1F1BE1D600AC092B /* BluetoothViewController.swift */,
 				FADB54181F1BC02200AC092B /* DataOFBoard.swift */,
 				FADB541E1F1D80F900AC092B /* BoolOptionsViewCell.swift */,
+				FAFACD3F1FA2496B0061BA04 /* SliderOptionsViewCell.swift */,
+				FAFACD411FA251CE0061BA04 /* AllSlider.swift */,
 				FAA885881F1AD0DC001728DE /* Main.storyboard */,
 				FAA8858B1F1AD0DC001728DE /* Assets.xcassets */,
 				FAA8858D1F1AD0DC001728DE /* LaunchScreen.storyboard */,
@@ -168,6 +174,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAFACD421FA251CF0061BA04 /* AllSlider.swift in Sources */,
 				FA295CFD1F20054E005BB064 /* crc8.c in Sources */,
 				FAA885831F1AD0DB001728DE /* AppDelegate.swift in Sources */,
 				FAA885851F1AD0DB001728DE /* MenuViewController.swift in Sources */,
@@ -176,6 +183,7 @@
 				FAD942F81F2125290024AFA3 /* AppTabBarController.swift in Sources */,
 				FADB54171F1B9A8700AC092B /* OpcjeViewController.swift in Sources */,
 				FADB54191F1BC02200AC092B /* DataOFBoard.swift in Sources */,
+				FAFACD401FA2496B0061BA04 /* SliderOptionsViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

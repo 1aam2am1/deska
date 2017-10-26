@@ -21,10 +21,10 @@ class MenuViewController: UIViewController {
     // MARK: Akcje
     
     @IBAction func slider_action(_ sender: UISlider) {
-        
-    if !sender.isTracking {
-        sender.value = 0
-    }
+
+        if !sender.isTracking {
+            sender.value = 0
+        }
         
         DataOFBoard.sharedInstance.value = Int(round(sender.value))
         
@@ -62,9 +62,9 @@ class MenuViewController: UIViewController {
         }
         
         
-        Batery.text = "Batery: \(Float(DataOFBoard.sharedInstance.volt) * 1.1 * 16 / 1024)V"
-        Cell.text = "Cell: \(Float(DataOFBoard.sharedInstance.volt) * 1.1 * 16 / 1024 / 4)V"
-        Speed.text = "Speed: \(DataOFBoard.sharedInstance.rpm)Km/h"
+        Batery.text = String(format: "Batery: %.2fV", Float(DataOFBoard.sharedInstance.volt) * 1.1 * 16 / 1024)
+        Cell.text = String(format: "Cell: %.2fV", Float(DataOFBoard.sharedInstance.volt) * 1.1 * 16 / 1024 / 4)
+        Speed.text = String(format: "Speed: %iKm/h", DataOFBoard.sharedInstance.rpm)
         
         self.view.setNeedsDisplay()
     }
@@ -88,8 +88,8 @@ class MenuViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        DataOFBoard.sharedInstance.startTimerSpeedValue()
-        //DataOFBoard.sharedInstance.startTimerReadValue(1)
+        DataOFBoard.sharedInstance.sendSpeedTimer.start(seconds: 0.2)
+        DataOFBoard.sharedInstance.readValueTimer.start(seconds: 1)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.methodOfReceivedNotification), name: NSNotification.Name(rawValue: "DataBluetoothChanged"), object: nil)
     }
@@ -97,8 +97,8 @@ class MenuViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        DataOFBoard.sharedInstance.stopTimerSpeedValue()
-        //DataOFBoard.sharedInstance.stopTimerReadValue()
+        DataOFBoard.sharedInstance.sendSpeedTimer.stop(seconds: 0.2)
+        DataOFBoard.sharedInstance.readValueTimer.stop(seconds: 1)
         
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: "DataBluetoothChanged"), object: nil)
     }
