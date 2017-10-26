@@ -281,6 +281,21 @@ class DataOFBoard: NSObject, CBCentralManagerDelegate, CBPeripheralDelegate
         peripheral = nil
         mainCharacteristic = nil
         
+        rpm = 0
+        volt = 0
+        temp = 0
+        tempOfControler = 0
+        weight = 0
+        
+        _value = 0
+        _led1 = false
+        _led2 = false
+        _acceleration = 0
+        _maxBreak = 0
+        _requiredBoardSensor = false
+        _controlMode = 0
+        _battery = 0
+        
         NotificationCenter.default.post(name: Notification.Name(rawValue: "DataBluetoothChanged"), object: self)
     }
     

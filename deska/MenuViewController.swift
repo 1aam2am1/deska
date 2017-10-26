@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 class MenuViewController: UIViewController {
     
@@ -17,6 +18,7 @@ class MenuViewController: UIViewController {
     @IBOutlet var Batery: UILabel!
     @IBOutlet var Cell: UILabel!
     @IBOutlet var Speed: UILabel!
+    var alt_progress: Float = 0.0
     
     // MARK: Akcje
     
@@ -56,9 +58,17 @@ class MenuViewController: UIViewController {
         else if progress > 0.7 {
             ProgressBar.progressTintColor = UIColor.green
         }
-        else
-        {
+        else {
             ProgressBar.progressTintColor = UIColor.blue
+        }
+        
+        if DataOFBoard.sharedInstance.connected.isEmpty {
+            alt_progress = 1
+        }
+        
+        if alt_progress > 0.3 && progress <= 0.3 {
+            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+            alt_progress = progress
         }
         
         

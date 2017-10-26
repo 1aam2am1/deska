@@ -85,7 +85,7 @@ class OpcjeViewController: UITableViewController {
             case 0:
                 cell.textLabel?.text = "RPM: \(DataOFBoard.sharedInstance.rpm)"
             case 1:
-                cell.textLabel?.text = "Volt: \(Float(DataOFBoard.sharedInstance.volt) * 1.1 * 16 / 1024)V"
+                cell.textLabel?.text = String(format: "Volt: %.2fV", Float(DataOFBoard.sharedInstance.volt) * 1.1 * 16 / 1024)
             case 2:
                 cell.textLabel?.text = "Temperature: \(DataOFBoard.sharedInstance.temp)"
             case 3:
