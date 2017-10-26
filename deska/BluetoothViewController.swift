@@ -55,6 +55,10 @@ class BluetoothViewController: UITableViewController, CBCentralManagerDelegate {
         }
         else {
             manager.connect(peripheral, options: nil)
+            
+            let p = ActivityViewController(message: "Please wait...")
+            
+            self.present(p, animated: true, completion: nil)
         }
     }
     
@@ -114,6 +118,7 @@ class BluetoothViewController: UITableViewController, CBCentralManagerDelegate {
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
         print(error ?? "")
+        self.navigationController?.popViewController(animated: true)
     }
     
     // MARK: Funckje

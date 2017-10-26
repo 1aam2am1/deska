@@ -21,6 +21,7 @@
 		FADB541F1F1D80F900AC092B /* BoolOptionsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FADB541E1F1D80F900AC092B /* BoolOptionsViewCell.swift */; };
 		FAFACD401FA2496B0061BA04 /* SliderOptionsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFACD3F1FA2496B0061BA04 /* SliderOptionsViewCell.swift */; };
 		FAFACD421FA251CF0061BA04 /* AllSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFACD411FA251CE0061BA04 /* AllSlider.swift */; };
+		FAFACD441FA256890061BA04 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAFACD431FA256890061BA04 /* ActivityView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		FADB541E1F1D80F900AC092B /* BoolOptionsViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BoolOptionsViewCell.swift; sourceTree = "<group>"; };
 		FAFACD3F1FA2496B0061BA04 /* SliderOptionsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderOptionsViewCell.swift; sourceTree = "<group>"; };
 		FAFACD411FA251CE0061BA04 /* AllSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllSlider.swift; sourceTree = "<group>"; };
+		FAFACD431FA256890061BA04 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 				FADB541E1F1D80F900AC092B /* BoolOptionsViewCell.swift */,
 				FAFACD3F1FA2496B0061BA04 /* SliderOptionsViewCell.swift */,
 				FAFACD411FA251CE0061BA04 /* AllSlider.swift */,
+				FAFACD431FA256890061BA04 /* ActivityView.swift */,
 				FAA885881F1AD0DC001728DE /* Main.storyboard */,
 				FAA8858B1F1AD0DC001728DE /* Assets.xcassets */,
 				FAA8858D1F1AD0DC001728DE /* LaunchScreen.storyboard */,
@@ -174,6 +177,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FAFACD441FA256890061BA04 /* ActivityView.swift in Sources */,
 				FAFACD421FA251CF0061BA04 /* AllSlider.swift in Sources */,
 				FA295CFD1F20054E005BB064 /* crc8.c in Sources */,
 				FAA885831F1AD0DB001728DE /* AppDelegate.swift in Sources */,
